@@ -6,7 +6,7 @@
 #    By: aumartin <aumartin@42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/09 07:11:04 by aumartin          #+#    #+#              #
-#    Updated: 2024/07/30 11:11:25 by aumartin         ###   ########.fr        #
+#    Updated: 2024/08/07 18:01:29 by aumartin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,6 +57,7 @@ LIBFT		= libft/ft_atoi.c\
 		libft/ft_toupper.c
 PRINTF		= ft_printf/ft_printf.c ft_printf/ft_puthex.c ft_printf/ft_putnbr.c \
 	ft_printf/ft_puttxt.c
+GNL			= gnl/get_next_line_bonus.c gnl/get_next_line_utils_bonus.c
 OBJS		= ${LIBFT:.c=.o} ${PRINTF:.c=.o} ${GNL:.c=.o}
 CC			= gcc
 CFLAGS		= -Wall -Wextra -Werror

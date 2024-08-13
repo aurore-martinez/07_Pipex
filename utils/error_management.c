@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   error_management.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aumartin <aumartin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/30 11:13:58 by aumartin          #+#    #+#             */
-/*   Updated: 2024/07/30 11:14:22 by aumartin         ###   ########.fr       */
+/*   Created: 2024/08/07 18:33:46 by aumartin          #+#    #+#             */
+/*   Updated: 2024/08/13 17:15:52 by aumartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-#define PIPEX_H
+#include "../include/pipex.h"
 
-
-
-#endif
+void	error_exit(const char *message)
+{
+	perror(message);
+	exit(EXIT_FAILURE);
+}
