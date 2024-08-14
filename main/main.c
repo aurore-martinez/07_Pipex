@@ -6,7 +6,7 @@
 /*   By: aumartin <aumartin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:14:41 by aumartin          #+#    #+#             */
-/*   Updated: 2024/08/13 17:28:46 by aumartin         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:17:14 by aumartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	main(int argc, char **argv, char **envp)
 
 	pipex.envp = envp;
 
-	if (strcmp(argv[1], "here_doc") == 0)
+	/* if (strcmp(argv[1], "here_doc") == 0) */
+	if (ft_strncmp(argv[1], "here_doc", 8) == 0 && argv[1][8] == '\0')
 	{
 		if (argc < 6)
 		{

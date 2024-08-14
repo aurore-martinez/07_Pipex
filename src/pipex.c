@@ -6,7 +6,7 @@
 /*   By: aumartin <aumartin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:14:46 by aumartin          #+#    #+#             */
-/*   Updated: 2024/08/13 10:57:55 by aumartin         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:13:33 by aumartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,19 +64,21 @@ void	here_doc(t_pipex *pipex, char *limiter)
 	{
 		close(pipe_fd[0]);
 		char	*line = NULL;
-		size_t	len = 0;
 
 		while (1)
 		{
 			write(1, "> ", 2);
-			if (getline(&line, &len, stdin) == -1)
-				error_exit("getline");
-			if (strncmp(line, limiter, strlen(limiter)) == 0 && line[strlen(limiter)] == '\n')
+			line = get_next_line(STDIN_FILENO);
+			if (!line)
+				error_exit("get_next_line");
+			if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0 && line[ft_strlen(limiter)] == '\n')
+			{
+				free(line);
 				break ;
-			write(pipe_fd[1], line, strlen(line));
+			}
+			write(pipe_fd[1], line, ft_strlen(line));
+			free(line);
 		}
-
-		free(line);
 		close(pipe_fd[1]);
 		exit(EXIT_SUCCESS);
 	}
@@ -88,6 +90,8 @@ void	here_doc(t_pipex *pipex, char *limiter)
 
 		close(pipe_fd[1]);
 		pipex->infile = pipe_fd[0];
+		// Debugging message
+		ft_printf("Infile descriptor: %d\n", pipex->infile);
 		execute_pipex(pipex);
 		close(pipe_fd[0]);
 	}

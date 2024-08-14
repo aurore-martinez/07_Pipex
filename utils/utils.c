@@ -6,7 +6,7 @@
 /*   By: aumartin <aumartin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:18:24 by aumartin          #+#    #+#             */
-/*   Updated: 2024/08/13 13:24:10 by aumartin         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:42:08 by aumartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	exec_command(t_process *process, char **envp)
 	command_path = find_command_path(process->command[0], envp);
 	if (command_path == NULL)
 	{
-		fprintf(stderr, "Commande introuvable: %s\n", process->command[0]);
+		ft_printf("Commande introuvable: %s\n", process->command[0]);
 		exit(EXIT_FAILURE);
 	}
 	ft_printf("Commande path: %s\n", command_path);
@@ -68,7 +68,7 @@ char	*get_path_from_env(char **envp)
 	path = NULL;
 	while (envp[i])
 	{
-		if (strncmp(envp[i], "PATH=", 5) == 0)
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
 		{
 			path = envp[i] + 5;  // ignore "PATH="
 			break ;
@@ -81,7 +81,7 @@ char	*get_path_from_env(char **envp)
 char	**split_path(char *path)
 {
 	return (ft_split(path, ':'));
-	fprintf(stderr, " fonction split_path, path: %s\n", path);
+	ft_printf(" fonction split_path, path: %s\n", path);
 }
 
 char	*find_command_path(char *command, char **envp)
@@ -90,7 +90,7 @@ char	*find_command_path(char *command, char **envp)
 
 	if (path_env == NULL)
 	{
-		fprintf(stderr, "PATH variable env introuvable\n");
+		ft_printf("PATH variable env introuvable\n");
 		return NULL;
 	}
 
@@ -109,8 +109,9 @@ char	*find_command_path(char *command, char **envp)
 /* 		snprintf(full_path, sizeof(full_path), "%s/%s", paths[i], command); */
 
 		int ret = snprintf(full_path, sizeof(full_path), "%s/%s", paths[i], command);
-		if (ret < 0 || ret >= (int)sizeof(full_path)) {
-			fprintf(stderr, "Error constructing full path for %s\n", command);
+		if (ret < 0 || ret >= (int)sizeof(full_path))
+		{
+			ft_printf("Error constructing full path for %s\n", command);
 			continue ;
 		}
 
@@ -119,8 +120,8 @@ char	*find_command_path(char *command, char **envp)
 		if (access(full_path, X_OK) == 0)
 		{
 			free(paths); // Libère le tableau de chemins
-			return (strdup(full_path)); // Retourne une copie du chemin complet
-			fprintf(stderr, " apres strdup %s\n", full_path);
+			return (ft_strdup(full_path)); // Retourne une copie du chemin complet
+			//ft_printf(" apres strdup %s\n", full_path);
 		}
 		i++;
 	}

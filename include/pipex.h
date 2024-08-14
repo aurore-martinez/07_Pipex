@@ -6,7 +6,7 @@
 /*   By: aumartin <aumartin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:20:33 by aumartin          #+#    #+#             */
-/*   Updated: 2024/08/13 11:06:15 by aumartin         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:08:12 by aumartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "../lib/libft/libft.h"
 # include "../lib/ft_printf/ft_printf.h"
+# include "../lib/gnl/get_next_line_bonus.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
