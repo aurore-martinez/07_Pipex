@@ -7,7 +7,7 @@ else
 endif
 
 NAME = pipex
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror
 LIBFT = lib/libft.a
 SRC = main/main.c utils/error_management.c src/pipex.c src/process.c utils/utils.c

@@ -6,7 +6,7 @@
 /*   By: aumartin <aumartin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:14:41 by aumartin          #+#    #+#             */
-/*   Updated: 2024/08/14 14:17:14 by aumartin         ###   ########.fr       */
+/*   Updated: 2024/09/11 12:08:01 by aumartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		pipex.cmd_count = argc - 4;
 		pipex.cmds = &argv[3];
+		pipex.outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
 		here_doc(&pipex, argv[2]);
 	}
 	else

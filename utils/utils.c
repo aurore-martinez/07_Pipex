@@ -6,7 +6,7 @@
 /*   By: aumartin <aumartin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:18:24 by aumartin          #+#    #+#             */
-/*   Updated: 2024/08/14 14:42:08 by aumartin         ###   ########.fr       */
+/*   Updated: 2024/09/11 12:00:43 by aumartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void	exec_command(t_process *process, char **envp)
 	char	*command_path;
 
 	// Printf la commande et ses args
-	ft_printf("Executing command: %s\n", process->command[0]);
-	for (int i = 1; process->command[i]; i++)
-		ft_printf("Argument %d: %s\n", i, process->command[i]);
+//	ft_printf("Executing command: %s\n", process->command[0]);
+	// for (int i = 1; process->command[i]; i++)
+	// 	ft_printf("Argument %d: %s\n", i, process->command[i]);
 
 /* 	// Vérifie si le fichier de commande est exécutable
 	if (access(process->command[0], X_OK) != 0)
@@ -35,11 +35,12 @@ void	exec_command(t_process *process, char **envp)
 		ft_printf("Commande introuvable: %s\n", process->command[0]);
 		exit(EXIT_FAILURE);
 	}
-	ft_printf("Commande path: %s\n", command_path);
+//	ft_printf("Commande path: %s\n", command_path);
 
 	// Redirige les descripteurs de fichiers
 	if (dup2(process->input, STDIN_FILENO) == -1 || dup2(process->output, STDOUT_FILENO) == -1)
 	{
+		ft_printf("%s\n", command_path);
 		perror("dup2");
 		free(command_path);
 		exit(EXIT_FAILURE);
@@ -116,7 +117,7 @@ char	*find_command_path(char *command, char **envp)
 		}
 
 		// Printf pour le débogage
-		ft_printf("Testing path: %s\n", full_path);
+		// ft_printf("Testing path: %s\n", full_path);
 		if (access(full_path, X_OK) == 0)
 		{
 			free(paths); // Libère le tableau de chemins
