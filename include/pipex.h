@@ -6,7 +6,7 @@
 /*   By: aumartin <aumartin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:20:33 by aumartin          #+#    #+#             */
-/*   Updated: 2024/08/14 14:08:12 by aumartin         ###   ########.fr       */
+/*   Updated: 2024/10/21 12:11:10 by aumartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,13 @@ typedef struct s_pipex
 	char	**envp;
 }	t_pipex;
 
+void	handle_here_doc(int ac, char **av, t_pipex *pipex);
 void	execute_pipex(t_pipex *pipex);
 void	here_doc(t_pipex *pipex, char *limiter);
 void	init_processes(t_pipex *pipex, t_process *processes);
 void	error_exit(const char *message);
 void	exec_command(t_process *process, char **envp);
+void	handle_exec_errors(int error_code, const char *command);
 
 char	*get_path_from_env(char **envp);
 char	**split_path(char *path);

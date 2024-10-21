@@ -6,7 +6,7 @@
 /*   By: aumartin <aumartin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:18:24 by aumartin          #+#    #+#             */
-/*   Updated: 2024/09/11 12:00:43 by aumartin         ###   ########.fr       */
+/*   Updated: 2024/10/21 11:49:55 by aumartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,7 @@ void	exec_command(t_process *process, char **envp)
 	// Vérifie si le chemin complet de la commande est accessible
 	command_path = find_command_path(process->command[0], envp);
 	if (command_path == NULL)
-	{
-		ft_printf("Commande introuvable: %s\n", process->command[0]);
-		exit(EXIT_FAILURE);
-	}
-//	ft_printf("Commande path: %s\n", command_path);
+		handle_exec_errors(ENOENT, process->command[0]);
 
 	// Redirige les descripteurs de fichiers
 	if (dup2(process->input, STDIN_FILENO) == -1 || dup2(process->output, STDOUT_FILENO) == -1)
@@ -51,6 +47,7 @@ void	exec_command(t_process *process, char **envp)
 	// Exécute la commande
 	if (execve(command_path, process->command, envp) == -1)
 	{
+		handle_exec_errors(errno, process->command[0]);
 		perror("execve");
 		free(command_path);
 		exit(EXIT_FAILURE);
