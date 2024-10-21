@@ -6,7 +6,7 @@
 /*   By: aumartin <aumartin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:18:24 by aumartin          #+#    #+#             */
-/*   Updated: 2024/10/21 11:49:55 by aumartin         ###   ########.fr       */
+/*   Updated: 2024/10/21 14:52:27 by aumartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,8 +127,6 @@ char	*find_command_path(char *command, char **envp)
 	return (NULL);  // Retourne NULL si la commande n'a pas été trouvée
 }
 
-
-
 // fonction pour comprendre la mecanisme
 
 /* char	*find_command_path(char *command)
@@ -137,17 +135,14 @@ char	*find_command_path(char *command, char **envp)
 	char	*path;
 	char	full_path[1024];
 	char	*path_copy;
-
 	if (path_env == NULL)
 		return (NULL);
-
 	path_copy = strdup(path_env); // Crée une copie de PATH pour strtok
 	if (path_copy == NULL)
 	{
 		perror("strdup");
 		exit(EXIT_FAILURE);
 	}
-
 	path = strtok(path_copy, ":");
 	while (path != NULL)
 	{
@@ -159,7 +154,6 @@ char	*find_command_path(char *command, char **envp)
 		}
 		path = strtok(NULL, ":");
 	}
-
 	free(path_copy);
 	return (NULL);  // Retourne NULL si la commande n'a pas été trouvée
 } */

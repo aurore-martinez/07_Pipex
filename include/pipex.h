@@ -6,7 +6,7 @@
 /*   By: aumartin <aumartin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:20:33 by aumartin          #+#    #+#             */
-/*   Updated: 2024/10/21 12:11:10 by aumartin         ###   ########.fr       */
+/*   Updated: 2024/10/21 16:39:51 by aumartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,27 @@ typedef struct s_pipex
 	char	**envp;
 }	t_pipex;
 
+/* Prototypes fonctions main */
 void	handle_here_doc(int ac, char **av, t_pipex *pipex);
+
+/* Prototypes fonctions pipex */
+void	wait_processes(int cmd_count, pid_t pid);
 void	execute_pipex(t_pipex *pipex);
 void	here_doc(t_pipex *pipex, char *limiter);
+void	write_here_doc(int fd, char *limiter);
+
+/* Prototypes fonctions process */
 void	init_processes(t_pipex *pipex, t_process *processes);
+void	assign_processes(t_pipex *pipex, t_process *processes, int *pipe_fd);
+int		*alloc_pipes(int cmd_count);
+void	free_processes(t_process *processes, int cmd_count);
+
+/* Prototypes fonctions error_management */
 void	error_exit(const char *message);
-void	exec_command(t_process *process, char **envp);
 void	handle_exec_errors(int error_code, const char *command);
 
+/* Prototypes fonctions utils */
+void	exec_command(t_process *process, char **envp);
 char	*get_path_from_env(char **envp);
 char	**split_path(char *path);
 char	*find_command_path(char *command, char **envp);
