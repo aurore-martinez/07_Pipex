@@ -6,35 +6,36 @@
 /*   By: aumartin <aumartin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:18:24 by aumartin          #+#    #+#             */
-/*   Updated: 2024/10/21 14:52:27 by aumartin         ###   ########.fr       */
+/*   Updated: 2024/10/21 17:46:25 by aumartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 
-void	exec_command(t_process *process, char **envp)
-{
-	char	*command_path;
+/*
+// Printf la commande et ses args
+	ft_printf("Executing command: %s\n", process->command[0]);
 
-	// Printf la commande et ses args
-//	ft_printf("Executing command: %s\n", process->command[0]);
-	// for (int i = 1; process->command[i]; i++)
-	// 	ft_printf("Argument %d: %s\n", i, process->command[i]);
+	for (int i = 1; process->command[i]; i++)
+	ft_printf("Argument %d: %s\n", i, process->command[i]);
 
-/* 	// Vérifie si le fichier de commande est exécutable
+// Vérifie si le fichier de commande est exécutable
 	if (access(process->command[0], X_OK) != 0)
 	{
 		perror("access");
 		exit(EXIT_FAILURE);
-	} */
+	}
+*/
 
-	// Vérifie si le chemin complet de la commande est accessible
+void	exec_command(t_process *process, char **envp)
+{
+	char	*command_path;
+
 	command_path = find_command_path(process->command[0], envp);
 	if (command_path == NULL)
 		handle_exec_errors(ENOENT, process->command[0]);
-
-	// Redirige les descripteurs de fichiers
-	if (dup2(process->input, STDIN_FILENO) == -1 || dup2(process->output, STDOUT_FILENO) == -1)
+	if (dup2(process->input, STDIN_FILENO) == -1
+		|| dup2(process->output, STDOUT_FILENO) == -1)
 	{
 		ft_printf("%s\n", command_path);
 		perror("dup2");
@@ -43,8 +44,6 @@ void	exec_command(t_process *process, char **envp)
 	}
 	close(process->input);
 	close(process->output);
-
-	// Exécute la commande
 	if (execve(command_path, process->command, envp) == -1)
 	{
 		handle_exec_errors(errno, process->command[0]);
@@ -52,11 +51,10 @@ void	exec_command(t_process *process, char **envp)
 		free(command_path);
 		exit(EXIT_FAILURE);
 	}
-
 	free(command_path);
 }
 
-// trouve PATH dans envp puis divise avec split
+/* trouve PATH dans envp puis divise avec split et ignore "PATH=" */
 char	*get_path_from_env(char **envp)
 {
 	int		i;
@@ -68,7 +66,7 @@ char	*get_path_from_env(char **envp)
 	{
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
 		{
-			path = envp[i] + 5;  // ignore "PATH="
+			path = envp[i] + 5;
 			break ;
 		}
 		i++;
@@ -84,52 +82,34 @@ char	**split_path(char *path)
 
 char	*find_command_path(char *command, char **envp)
 {
-	char *path_env = get_path_from_env(envp);
+	char	*path_env;
+	char	**paths;
+	char	full_path[1024];
+	int		i;
 
+	path_env = get_path_from_env(envp);
 	if (path_env == NULL)
-	{
-		ft_printf("PATH variable env introuvable\n");
-		return NULL;
-	}
-
-	char **paths = split_path(path_env);
-
+		return (NULL);
+	paths = split_path(path_env);
 	if (paths == NULL)
-	{
-		perror("split_path");
-		return NULL;
-	}
-
-	char full_path[1024];
-	int i = 0;
+		return (perror("split_path"), NULL);
+	i = 0;
 	while (paths[i])
 	{
-/* 		snprintf(full_path, sizeof(full_path), "%s/%s", paths[i], command); */
-
-		int ret = snprintf(full_path, sizeof(full_path), "%s/%s", paths[i], command);
-		if (ret < 0 || ret >= (int)sizeof(full_path))
-		{
-			ft_printf("Error constructing full path for %s\n", command);
-			continue ;
-		}
-
-		// Printf pour le débogage
-		// ft_printf("Testing path: %s\n", full_path);
+		ft_strlcpy(full_path, paths[i], sizeof(full_path));
+		ft_strlcat(full_path, "/", sizeof(full_path));
+		ft_strlcat(full_path, command, sizeof(full_path));
 		if (access(full_path, X_OK) == 0)
-		{
-			free(paths); // Libère le tableau de chemins
-			return (ft_strdup(full_path)); // Retourne une copie du chemin complet
-			//ft_printf(" apres strdup %s\n", full_path);
-		}
+			return (ft_strdup(full_path));
 		i++;
 	}
 	free(paths);
-	return (NULL);  // Retourne NULL si la commande n'a pas été trouvée
+	return (NULL);
 }
 
-// fonction pour comprendre la mecanisme
+/* fonction pour comprendre la mecanisme
 
-/* char	*find_command_path(char *command)
+ char	*find_command_path(char *command)
 {
 	char	*path_env = getenv("PATH");
 	char	*path;

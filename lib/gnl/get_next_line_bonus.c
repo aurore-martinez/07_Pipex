@@ -16,16 +16,16 @@ char	*get_next_line(int fd)
 {
 	static char	*stored_lines[OPEN_MAX];
 	char		*line_to_return;
-	int			end_of_line;
+	int			eol;
 
 	if (fd < 0 || fd >= OPEN_MAX || BUFFER_SIZE <= 0)
 		return (NULL);
 	line_to_return = NULL;
-	end_of_line = -1;
-	stored_lines[fd] = read_and_store(&end_of_line, fd, stored_lines[fd]);
+	eol = -1;
+	stored_lines[fd] = read_and_store(&eol, fd, stored_lines[fd]);
 	if (!stored_lines[fd])
 		return (NULL);
-	line_to_return = extract_line(&end_of_line, stored_lines[fd], line_to_return);
+	line_to_return = extract_line(&eol, stored_lines[fd], line_to_return);
 	if (!line_to_return)
 		return (NULL);
 	stored_lines[fd] = gnl_memmove(stored_lines[fd]);
