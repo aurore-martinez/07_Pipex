@@ -6,7 +6,7 @@
 /*   By: aumartin <aumartin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:14:41 by aumartin          #+#    #+#             */
-/*   Updated: 2024/10/21 15:51:14 by aumartin         ###   ########.fr       */
+/*   Updated: 2024/10/22 09:34:28 by aumartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	main(int ac, char **av, char **envp)
 
 void	handle_here_doc(int ac, char **av, t_pipex *pipex)
 {
-	if (ac < 6)
+	if (ac < 5)
 	{
 		ft_printf("Erreur args < 6, here_doc LIMITER cmd cmd1[...] file\n");
 		exit(EXIT_FAILURE);
@@ -49,5 +49,7 @@ void	handle_here_doc(int ac, char **av, t_pipex *pipex)
 	pipex->cmd_count = ac - 4;
 	pipex->cmds = &av[3];
 	pipex->outfile = open(av[ac - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (pipex->outfile < 0)
+		error_exit("open outfile");
 	here_doc(pipex, av[2]);
 }

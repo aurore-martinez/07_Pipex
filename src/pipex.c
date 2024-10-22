@@ -6,7 +6,7 @@
 /*   By: aumartin <aumartin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:14:46 by aumartin          #+#    #+#             */
-/*   Updated: 2024/10/21 16:38:44 by aumartin         ###   ########.fr       */
+/*   Updated: 2024/10/22 09:36:47 by aumartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,15 @@ void	here_doc(t_pipex *pipex, char *limiter)
 	if (pid == -1)
 		error_exit("fork");
 	if (pid == 0)
+	{
+		close(pipe_fd[0]);
 		write_here_doc(pipe_fd[1], limiter);
+		exit(EXIT_SUCCESS);
+	}
+	close(pipe_fd[1]);
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
 		error_exit("child process failed");
-	close(pipe_fd[1]);
 	pipex->infile = pipe_fd[0];
 	execute_pipex(pipex);
 	close(pipe_fd[0]);
@@ -88,7 +92,6 @@ void	write_here_doc(int fd, char *limiter)
 {
 	char	*line;
 
-	close(fd);
 	line = NULL;
 	while (1)
 	{
